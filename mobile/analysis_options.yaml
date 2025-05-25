@@ -55,7 +55,7 @@ custom_lint:
       restrict: package:photo_manager
       allowed:
         # required / wanted
-        - 'lib/infrastructure/repositories/album_media.repository.dart'
+        - 'lib/infrastructure/repositories/{album,asset}_media.repository.dart'
         - 'lib/repositories/{album,asset,file}_media.repository.dart'
         # acceptable exceptions for the time being
         - lib/entities/asset.entity.dart # to provide local AssetEntity for now
@@ -166,6 +166,7 @@ dart_code_metrics:
     - prefer-immediate-return
     - prefer-last
     - prefer-simpler-boolean-expressions
+    - prefer-single-widget-per-file: false
     - prefer-switch-expression
     - prefer-type-over-var
     - use-existing-destructuring

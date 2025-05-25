@@ -90,7 +90,6 @@ class LocalMediaSummaryPage extends StatelessWidget {
   }
 }
 
-// ignore: prefer-single-widget-per-file
 class _Summary extends StatelessWidget {
   final String name;
   final Future<int> countFuture;

@@ -58,6 +58,11 @@ final _features = [
     icon: Icons.table_chart_rounded,
     onTap: (ctx, _) => ctx.pushRoute(const LocalMediaSummaryRoute()),
   ),
+  _Feature(
+    name: 'Local Timeline',
+    icon: Icons.browse_gallery_rounded,
+    onTap: (ctx, _) => ctx.pushRoute(const LocalTimelineRoute()),
+  ),
 ];
 
 @RoutePage()
