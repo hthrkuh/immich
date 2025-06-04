@@ -115,7 +115,7 @@ class AlbumNotifier extends StateNotifier<List<Album>> {
 
   Future<Album?> toggleAssetOrder(Album album) {
     final order =
-        album.sortOrder == AssetOrder.asc ? AssetOrder.desc : AssetOrder.asc;
+        album.assetOrder == AssetOrder.asc ? AssetOrder.desc : AssetOrder.asc;
 
     return albumService.updateAssetOrder(album, order);
   }

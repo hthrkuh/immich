@@ -1,5 +1,5 @@
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
+import 'package:openapi/api.dart';
 
 abstract interface class IAlbumApiRepository {
   Future<Album> get(String id);

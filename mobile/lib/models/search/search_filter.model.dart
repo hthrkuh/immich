@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/interfaces/person_api.interface.dart';
+import 'package:openapi/api.dart';
 
 class SearchLocationFilter {
   String? country;

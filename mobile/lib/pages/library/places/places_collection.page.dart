@@ -16,6 +16,7 @@ import 'package:immich_mobile/services/api.service.dart';
 import 'package:immich_mobile/widgets/common/search_field.dart';
 import 'package:immich_mobile/widgets/map/map_thumbnail.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:openapi/api.dart';
 
 @RoutePage()
 class PlacesCollectionPage extends HookConsumerWidget {

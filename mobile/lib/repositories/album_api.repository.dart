@@ -162,7 +162,7 @@ class AlbumApiRepository extends ApiRepository implements IAlbumApiRepository {
       startDate: dto.startDate,
       endDate: dto.endDate,
       activityEnabled: dto.isActivityEnabled,
-      sortOrder: dto.order == AssetOrder.asc ? AssetOrder.asc : AssetOrder.desc,
+      assetOrder: dto.order == AssetOrder.asc ? AssetOrder.asc : AssetOrder.desc,
     );
     album.remoteAssetCount = dto.assetCount;
     album.owner.value =

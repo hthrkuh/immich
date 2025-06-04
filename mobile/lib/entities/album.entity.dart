@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/user.entity.dart';
 import 'package:immich_mobile/utils/datetime_comparison.dart';
@@ -24,7 +23,7 @@ class Album {
     this.lastModifiedAssetTimestamp,
     required this.shared,
     required this.activityEnabled,
-    this.sortOrder = AssetOrder.desc,
+    this.assetOrder = AssetOrder.desc,
   });
 
   // fields stored in DB
@@ -159,7 +158,7 @@ class Album {
     a.remoteAssetCount = dto.assetCount;
     a.owner.value = await db.users.getById(dto.ownerId);
     if (dto.order != null) {
-      a.sortOrder =
+      a.assetOrder =
           dto.order == AssetOrder.asc ? AssetOrder.asc : AssetOrder.desc;
     }
 

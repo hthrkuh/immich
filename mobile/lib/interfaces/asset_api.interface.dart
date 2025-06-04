@@ -1,4 +1,3 @@
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:openapi/api.dart';
 

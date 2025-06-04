@@ -487,7 +487,7 @@ class AlbumService {
     try {
       final updateAlbum =
           await _albumApiRepository.update(album.remoteId!, sortOrder: order);
-      album.sortOrder = updateAlbum.sortOrder;
+      album.assetOrder = updateAlbum.assetOrder;
 
       return _albumRepository.update(album);
     } catch (error, stackTrace) {
