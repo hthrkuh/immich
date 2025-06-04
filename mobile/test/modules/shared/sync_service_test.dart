@@ -14,6 +14,7 @@ import 'package:immich_mobile/interfaces/asset.interface.dart';
 import 'package:immich_mobile/interfaces/partner_api.interface.dart';
 import 'package:immich_mobile/services/sync.service.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:openapi/api.dart';
 
 import '../../domain/service.mock.dart';
 import '../../fixtures/asset.stub.dart';
@@ -41,7 +42,7 @@ void main() {
       fileModifiedAt: date,
       updatedAt: date,
       durationInSeconds: 0,
-      type: AssetType.image,
+      type: AssetType.IMAGE,
       fileName: localId ?? remoteId ?? "",
       isFavorite: false,
       isArchived: false,

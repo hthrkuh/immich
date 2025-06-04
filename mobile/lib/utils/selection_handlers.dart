@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/extensions/asset_extensions.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
@@ -15,6 +14,7 @@ import 'package:immich_mobile/widgets/common/immich_toast.dart';
 import 'package:immich_mobile/widgets/common/location_picker.dart';
 import 'package:immich_mobile/widgets/common/share_dialog.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:openapi/api.dart';
 
 void handleShareAssets(
   WidgetRef ref,
@@ -162,7 +162,7 @@ Future<void> handleEditLocation(
 Future<void> handleSetAssetsVisibility(
   WidgetRef ref,
   BuildContext context,
-  AssetVisibilityEnum visibility,
+  AssetVisibility visibility,
   List<Asset> selection, {
   ToastGravity toastGravity = ToastGravity.BOTTOM,
 }) async {
@@ -172,7 +172,7 @@ Future<void> handleSetAssetsVisibility(
         .setLockedView(selection, visibility);
 
     final assetOrAssets = selection.length > 1 ? 'assets' : 'asset';
-    final toastMessage = visibility == AssetVisibilityEnum.locked
+    final toastMessage = visibility == AssetVisibility.locked
         ? 'Added ${selection.length} $assetOrAssets to locked folder'
         : 'Removed ${selection.length} $assetOrAssets from locked folder';
     if (context.mounted) {

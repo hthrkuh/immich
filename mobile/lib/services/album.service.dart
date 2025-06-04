@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/domain/models/user.model.dart';
 import 'package:immich_mobile/domain/services/user.service.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
@@ -30,6 +29,7 @@ import 'package:immich_mobile/services/entity.service.dart';
 import 'package:immich_mobile/services/sync.service.dart';
 import 'package:immich_mobile/utils/hash.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 
 final albumServiceProvider = Provider(
   (ref) => AlbumService(
@@ -483,7 +483,7 @@ class AlbumService {
     return _albumRepository.search(searchTerm, filterMode);
   }
 
-  Future<Album?> updateSortOrder(Album album, SortOrder order) async {
+  Future<Album?> updateAssetOrder(Album album, AssetOrder order) async {
     try {
       final updateAlbum =
           await _albumApiRepository.update(album.remoteId!, sortOrder: order);

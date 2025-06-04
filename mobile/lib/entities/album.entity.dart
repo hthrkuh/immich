@@ -24,7 +24,7 @@ class Album {
     this.lastModifiedAssetTimestamp,
     required this.shared,
     required this.activityEnabled,
-    this.sortOrder = SortOrder.desc,
+    this.sortOrder = AssetOrder.desc,
   });
 
   // fields stored in DB
@@ -42,7 +42,7 @@ class Album {
   bool shared;
   bool activityEnabled;
   @enumerated
-  SortOrder sortOrder;
+  AssetOrder assetOrder;
   final IsarLink<User> owner = IsarLink<User>();
   final IsarLink<Asset> thumbnail = IsarLink<Asset>();
   final IsarLinks<User> sharedUsers = IsarLinks<User>();
@@ -160,7 +160,7 @@ class Album {
     a.owner.value = await db.users.getById(dto.ownerId);
     if (dto.order != null) {
       a.sortOrder =
-          dto.order == AssetOrder.asc ? SortOrder.asc : SortOrder.desc;
+          dto.order == AssetOrder.asc ? AssetOrder.asc : AssetOrder.desc;
     }
 
     if (dto.albumThumbnailAssetId != null) {

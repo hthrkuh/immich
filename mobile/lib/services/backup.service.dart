@@ -520,10 +520,11 @@ class BackupService {
   }
 
   String _getAssetType(AssetType assetType) => switch (assetType) {
-        AssetType.audio => "AUDIO",
-        AssetType.image => "IMAGE",
-        AssetType.video => "VIDEO",
-        AssetType.other => "OTHER",
+        AssetType.AUDIO => "AUDIO",
+        AssetType.IMAGE => "IMAGE",
+        AssetType.VIDEO => "VIDEO",
+        AssetType.OTHER => "OTHER",
+        _ => throw Exception('Unknown AssetType value: $this'),
       };
 }
 

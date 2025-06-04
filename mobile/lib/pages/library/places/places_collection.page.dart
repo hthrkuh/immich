@@ -128,7 +128,7 @@ class PlaceTile extends StatelessWidget {
               isArchive: false,
               isFavorite: false,
             ),
-            mediaType: AssetType.other,
+            mediaType: AssetType.OTHER,
           ),
         ),
       );

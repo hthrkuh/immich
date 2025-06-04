@@ -3,6 +3,7 @@ import 'package:immich_mobile/domain/models/asset/base_asset.model.dart';
 import 'package:immich_mobile/infrastructure/entities/user.entity.dart';
 import 'package:immich_mobile/infrastructure/utils/asset.mixin.dart';
 import 'package:immich_mobile/infrastructure/utils/drift_default.mixin.dart';
+import 'package:openapi/api.dart';
 
 @TableIndex(
   name: 'UQ_remote_asset_owner_checksum',

@@ -1,9 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/models/folder/root_folder.model.dart';
 import 'package:immich_mobile/services/folder.service.dart';
 import 'package:immich_mobile/widgets/asset_grid/asset_grid_data_structure.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 
 class FolderStructureNotifier extends StateNotifier<AsyncValue<RootFolder>> {
   final FolderService _folderService;
@@ -11,7 +11,7 @@ class FolderStructureNotifier extends StateNotifier<AsyncValue<RootFolder>> {
 
   FolderStructureNotifier(this._folderService) : super(const AsyncLoading());
 
-  Future<void> fetchFolders(SortOrder order) async {
+  Future<void> fetchFolders(AssetOrder order) async {
     try {
       final folders = await _folderService.getFolderStructure(order);
       state = AsyncData(folders);
@@ -38,7 +38,7 @@ class FolderRenderListNotifier extends StateNotifier<AsyncValue<RenderList>> {
   FolderRenderListNotifier(this._folderService, this._folder)
       : super(const AsyncLoading());
 
-  Future<void> fetchAssets(SortOrder order) async {
+  Future<void> fetchAssets(AssetOrder order) async {
     try {
       final assets = await _folderService.getFolderAssets(_folder, order);
       final renderList =

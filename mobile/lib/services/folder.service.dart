@@ -5,6 +5,7 @@ import 'package:immich_mobile/models/folder/recursive_folder.model.dart';
 import 'package:immich_mobile/models/folder/root_folder.model.dart';
 import 'package:immich_mobile/repositories/folder_api.repository.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 
 final folderServiceProvider = Provider(
   (ref) => FolderService(ref.watch(folderApiRepositoryProvider)),
@@ -16,7 +17,7 @@ class FolderService {
 
   FolderService(this._folderApiRepository);
 
-  Future<RootFolder> getFolderStructure(SortOrder order) async {
+  Future<RootFolder> getFolderStructure(AssetOrder order) async {
     final paths = await _folderApiRepository.getAllUniquePaths();
 
     // Create folder structure
@@ -54,7 +55,7 @@ class FolderService {
           );
           // Sort folders based on order parameter
           folderMap[parentPath]!.sort(
-            (a, b) => order == SortOrder.desc
+            (a, b) => order == AssetOrder.desc
                 ? b.name.compareTo(a.name)
                 : a.name.compareTo(b.name),
           );
@@ -71,7 +72,7 @@ class FolderService {
         folder.subfolders.addAll(folderMap[fullPath]!);
         // Sort subfolders based on order parameter
         folder.subfolders.sort(
-          (a, b) => order == SortOrder.desc
+          (a, b) => order == AssetOrder.desc
               ? b.name.compareTo(a.name)
               : a.name.compareTo(b.name),
         );
@@ -84,7 +85,7 @@ class FolderService {
     List<RecursiveFolder> rootSubfolders = folderMap['_root_'] ?? [];
     // Sort root subfolders based on order parameter
     rootSubfolders.sort(
-      (a, b) => order == SortOrder.desc
+      (a, b) => order == AssetOrder.desc
           ? b.name.compareTo(a.name)
           : a.name.compareTo(b.name),
     );
@@ -101,7 +102,7 @@ class FolderService {
 
   Future<List<Asset>> getFolderAssets(
     RootFolder folder,
-    SortOrder order,
+    AssetOrder order,
   ) async {
     try {
       if (folder is RecursiveFolder) {
@@ -110,7 +111,7 @@ class FolderService {
         fullPath = fullPath[0] == '/' ? fullPath.substring(1) : fullPath;
         var result = await _folderApiRepository.getAssetsForPath(fullPath);
 
-        if (order == SortOrder.desc) {
+        if (order == AssetOrder.desc) {
           result.sort((a, b) => b.fileCreatedAt.compareTo(a.fileCreatedAt));
         } else {
           result.sort((a, b) => a.fileCreatedAt.compareTo(b.fileCreatedAt));

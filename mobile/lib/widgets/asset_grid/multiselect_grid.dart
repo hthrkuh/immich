@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/extensions/collection_extensions.dart';
@@ -27,6 +26,7 @@ import 'package:immich_mobile/widgets/asset_grid/asset_grid_data_structure.dart'
 import 'package:immich_mobile/widgets/asset_grid/control_bottom_app_bar.dart';
 import 'package:immich_mobile/widgets/asset_grid/immich_asset_grid.dart';
 import 'package:immich_mobile/widgets/common/immich_toast.dart';
+import 'package:openapi/api.dart';
 
 class MultiselectGrid extends HookConsumerWidget {
   const MultiselectGrid({
@@ -407,8 +407,8 @@ class MultiselectGrid extends HookConsumerWidget {
         if (remoteAssets.isNotEmpty) {
           final isInLockedView = ref.read(inLockedViewProvider);
           final visibility = isInLockedView
-              ? AssetVisibilityEnum.timeline
-              : AssetVisibilityEnum.locked;
+              ? AssetVisibility.timeline
+              : AssetVisibility.locked;
 
           await handleSetAssetsVisibility(
             ref,

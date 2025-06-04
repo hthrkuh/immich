@@ -15,6 +15,7 @@ import 'package:immich_mobile/routing/router.dart';
 import 'package:immich_mobile/utils/bytes_units.dart';
 import 'package:immich_mobile/widgets/asset_grid/thumbnail_image.dart';
 import 'package:immich_mobile/widgets/common/immich_toast.dart';
+import 'package:openapi/api.dart';
 
 RecursiveFolder? _findFolderInStructure(
   RootFolder rootFolder,
@@ -49,7 +50,7 @@ class FolderPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final folderState = ref.watch(folderStructureProvider);
     final currentFolder = useState<RecursiveFolder?>(folder);
-    final sortOrder = useState<SortOrder>(SortOrder.asc);
+    final sortOrder = useState<AssetOrder>(AssetOrder.asc);
 
     useEffect(
       () {
@@ -78,9 +79,9 @@ class FolderPage extends HookConsumerWidget {
       [folderState],
     );
 
-    void onToggleSortOrder() {
+    void onToggleAssetOrder() {
       final newOrder =
-          sortOrder.value == SortOrder.asc ? SortOrder.desc : SortOrder.asc;
+          sortOrder.value == AssetOrder.asc ? AssetOrder.desc : AssetOrder.asc;
 
       ref.read(folderStructureProvider.notifier).fetchFolders(newOrder);
 
@@ -95,7 +96,7 @@ class FolderPage extends HookConsumerWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.swap_vert),
-            onPressed: onToggleSortOrder,
+            onPressed: onToggleAssetOrder,
           ),
         ],
       ),
@@ -134,13 +135,13 @@ class FolderPage extends HookConsumerWidget {
 class FolderContent extends HookConsumerWidget {
   final RootFolder? folder;
   final RootFolder root;
-  final SortOrder sortOrder;
+  final AssetOrder sortOrder;
 
   const FolderContent({
     super.key,
     this.folder,
     required this.root,
-    this.sortOrder = SortOrder.asc,
+    this.sortOrder = AssetOrder.asc,
   });
 
   @override

@@ -1,5 +1,6 @@
 import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
+import 'package:openapi/api.dart';
 
 abstract interface class IAssetApiRepository {
   // Future<Asset> get(String id);
@@ -19,6 +20,6 @@ abstract interface class IAssetApiRepository {
 
   Future<void> updateVisibility(
     List<String> list,
-    AssetVisibilityEnum visibility,
+    AssetVisibility visibility,
   );
 }

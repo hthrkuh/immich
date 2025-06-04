@@ -1,13 +1,7 @@
+import 'package:openapi/api.dart';
+
 part 'asset.model.dart';
 part 'local_asset.model.dart';
-
-enum AssetType {
-  // do not change this order!
-  other,
-  image,
-  video,
-  audio,
-}
 
 sealed class BaseAsset {
   final String name;

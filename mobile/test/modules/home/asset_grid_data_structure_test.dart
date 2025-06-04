@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:immich_mobile/widgets/asset_grid/asset_grid_data_structure.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
+import 'package:openapi/api.dart';
 
 void main() {
   final List<Asset> testAssets = [];
@@ -20,7 +21,7 @@ void main() {
         fileModifiedAt: date,
         updatedAt: date,
         durationInSeconds: 0,
-        type: AssetType.image,
+        type: AssetType.IMAGE,
         fileName: '',
         isFavorite: false,
         isArchived: false,

@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/domain/models/user.model.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/models/albums/album_search.model.dart';
 import 'package:immich_mobile/services/album.service.dart';
+import 'package:openapi/api.dart';
 
 final isRefreshingRemoteAlbumProvider = StateProvider<bool>((ref) => false);
 
@@ -113,11 +113,11 @@ class AlbumNotifier extends StateNotifier<List<Album>> {
     return albumService.setActivityStatus(album, enabled);
   }
 
-  Future<Album?> toggleSortOrder(Album album) {
+  Future<Album?> toggleAssetOrder(Album album) {
     final order =
-        album.sortOrder == SortOrder.asc ? SortOrder.desc : SortOrder.asc;
+        album.sortOrder == AssetOrder.asc ? AssetOrder.desc : AssetOrder.asc;
 
-    return albumService.updateSortOrder(album, order);
+    return albumService.updateAssetOrder(album, order);
   }
 
   @override

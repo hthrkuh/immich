@@ -21,6 +21,7 @@ import 'package:immich_mobile/repositories/file_media.repository.dart';
 import 'package:immich_mobile/services/api.service.dart';
 import 'package:immich_mobile/utils/bootstrap.dart';
 import 'package:immich_mobile/utils/diff.dart';
+import 'package:openapi/api.dart';
 
 /// Finds duplicates originating from missing EXIF information
 class BackupVerificationService {
@@ -175,7 +176,7 @@ class BackupVerificationService {
                   remote.fileCreatedAt,
                   local.fileCreatedAt,
                 ))) {
-          if (remote.type == AssetType.video) {
+          if (remote.type == AssetType.VIDEO) {
             // it's very unlikely that a video of same length, filesize, name
             // and date is wrong match. Cannot easily compare videos anyway
             return true;

@@ -1,5 +1,6 @@
 import 'package:immich_mobile/domain/models/exif.model.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
+import 'package:openapi/api.dart';
 
 final class AssetStub {
   const AssetStub._();
@@ -13,7 +14,7 @@ final class AssetStub {
     fileModifiedAt: DateTime(2020),
     updatedAt: DateTime.now(),
     durationInSeconds: 0,
-    type: AssetType.image,
+    type: AssetType.IMAGE,
     fileName: "image1.jpg",
     isFavorite: true,
     isArchived: false,
@@ -30,7 +31,7 @@ final class AssetStub {
     fileModifiedAt: DateTime(2010),
     updatedAt: DateTime.now(),
     durationInSeconds: 60,
-    type: AssetType.video,
+    type: AssetType.VIDEO,
     fileName: "image2.jpg",
     isFavorite: false,
     isArchived: false,
@@ -46,7 +47,7 @@ final class AssetStub {
     fileModifiedAt: DateTime(2025),
     updatedAt: DateTime.now(),
     durationInSeconds: 60,
-    type: AssetType.image,
+    type: AssetType.IMAGE,
     fileName: "image3.jpg",
     isFavorite: true,
     isArchived: false,

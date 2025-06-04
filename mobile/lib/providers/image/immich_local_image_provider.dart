@@ -9,6 +9,7 @@ import 'package:flutter/painting.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:logging/logging.dart';
 import 'package:photo_manager/photo_manager.dart' show ThumbnailSize;
+import 'package:openapi/api.dart';
 
 /// The local image provider for an asset
 class ImmichLocalImageProvider extends ImageProvider<ImmichLocalImageProvider> {
@@ -60,7 +61,7 @@ class ImmichLocalImageProvider extends ImageProvider<ImmichLocalImageProvider> {
       }
 
       switch (asset.type) {
-        case AssetType.image:
+        case AssetType.IMAGE:
           final File? file = await local.originFile;
           if (file == null) {
             throw StateError("Opening file for asset ${asset.fileName} failed");
@@ -68,7 +69,7 @@ class ImmichLocalImageProvider extends ImageProvider<ImmichLocalImageProvider> {
           final buffer = await ui.ImmutableBuffer.fromFilePath(file.path);
           yield await decode(buffer);
           break;
-        case AssetType.video:
+        case AssetType.VIDEO:
           final size = ThumbnailSize(width.ceil(), height.ceil());
           final thumbBytes = await local.thumbnailDataWithSize(size);
           if (thumbBytes == null) {

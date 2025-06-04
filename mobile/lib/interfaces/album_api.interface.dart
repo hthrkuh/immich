@@ -18,7 +18,7 @@ abstract interface class IAlbumApiRepository {
     String? thumbnailAssetId,
     String? description,
     bool? activityEnabled,
-    SortOrder? sortOrder,
+    AssetOrder? sortOrder,
   });
 
   Future<void> delete(String albumId);

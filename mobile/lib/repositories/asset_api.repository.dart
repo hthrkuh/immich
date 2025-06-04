@@ -1,5 +1,4 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/interfaces/asset_api.interface.dart';
 import 'package:immich_mobile/providers/api.provider.dart';
@@ -53,23 +52,10 @@ class AssetApiRepository extends ApiRepository implements IAssetApiRepository {
   @override
   Future<void> updateVisibility(
     List<String> ids,
-    AssetVisibilityEnum visibility,
+    AssetVisibility visibility,
   ) async {
     return _api.updateAssets(
-      AssetBulkUpdateDto(ids: ids, visibility: _mapVisibility(visibility)),
+      AssetBulkUpdateDto(ids: ids, visibility: visibility),
     );
-  }
-
-  _mapVisibility(AssetVisibilityEnum visibility) {
-    switch (visibility) {
-      case AssetVisibilityEnum.timeline:
-        return AssetVisibility.timeline;
-      case AssetVisibilityEnum.hidden:
-        return AssetVisibility.hidden;
-      case AssetVisibilityEnum.locked:
-        return AssetVisibility.locked;
-      case AssetVisibilityEnum.archive:
-        return AssetVisibility.archive;
-    }
   }
 }

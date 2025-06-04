@@ -233,7 +233,7 @@ void main() {
       ).thenAnswer((_) async => {});
       when(
         () => settingsMock.setSetting<int>(
-          AppSettingsEnum.selectedAlbumSortOrder,
+          AppSettingsEnum.selectedAlbumAssetOrder,
           any(),
         ),
       ).thenAnswer((_) async => {});
@@ -242,7 +242,7 @@ void main() {
     test('Returns the default sort mode when none set', () {
       // Returns the default value when nothing is set
       when(
-        () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumSortOrder),
+        () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumAssetOrder),
       ).thenReturn(0);
 
       expect(container.read(albumSortByOptionsProvider), AlbumSortMode.created);
@@ -251,7 +251,7 @@ void main() {
     test('Returns the correct sort mode with index from Store', () {
       // Returns the default value when nothing is set
       when(
-        () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumSortOrder),
+        () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumAssetOrder),
       ).thenReturn(3);
 
       expect(
@@ -267,7 +267,7 @@ void main() {
 
       verify(
         () => settingsMock.setSetting(
-          AppSettingsEnum.selectedAlbumSortOrder,
+          AppSettingsEnum.selectedAlbumAssetOrder,
           AlbumSortMode.mostOldest.storeIndex,
         ),
       );
@@ -275,7 +275,7 @@ void main() {
 
     test('Notifies listeners on state change', () {
       when(
-        () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumSortOrder),
+        () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumAssetOrder),
       ).thenReturn(0);
 
       final listener = ListenerMock<AlbumSortMode>();
@@ -306,7 +306,7 @@ void main() {
   });
 
   /// Verify the sort order provider
-  group('AlbumSortOrder', () {
+  group('AlbumAssetOrder', () {
     late AppSettingsService settingsMock;
     late ProviderContainer container;
 
@@ -327,7 +327,7 @@ void main() {
       ).thenAnswer((_) async => {});
       when(
         () => settingsMock.setSetting<int>(
-          AppSettingsEnum.selectedAlbumSortOrder,
+          AppSettingsEnum.selectedAlbumAssetOrder,
           any(),
         ),
       ).thenAnswer((_) async => {});
@@ -338,11 +338,11 @@ void main() {
         () => settingsMock.getSetting(AppSettingsEnum.selectedAlbumSortReverse),
       ).thenReturn(false);
 
-      expect(container.read(albumSortOrderProvider), isFalse);
+      expect(container.read(albumAssetOrderProvider), isFalse);
     });
 
     test('Properly saves the correct order', () {
-      container.read(albumSortOrderProvider.notifier).changeSortDirection(true);
+      container.read(albumAssetOrderProvider.notifier).changeSortDirection(true);
 
       verify(
         () => settingsMock.setSetting(
@@ -365,11 +365,11 @@ void main() {
       );
 
       // false -> true
-      container.read(albumSortOrderProvider.notifier).changeSortDirection(true);
+      container.read(albumAssetOrderProvider.notifier).changeSortDirection(true);
 
       // true -> false
       container
-          .read(albumSortOrderProvider.notifier)
+          .read(albumAssetOrderProvider.notifier)
           .changeSortDirection(false);
 
       verifyInOrder([

@@ -1,5 +1,4 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/entities/duplicated_asset.entity.dart';
@@ -8,6 +7,7 @@ import 'package:immich_mobile/interfaces/asset.interface.dart';
 import 'package:immich_mobile/providers/db.provider.dart';
 import 'package:immich_mobile/repositories/database.repository.dart';
 import 'package:immich_mobile/utils/hash.dart';
+import 'package:openapi/api.dart';
 import 'package:isar/isar.dart';
 
 final assetRepositoryProvider =
@@ -231,7 +231,7 @@ class AssetRepository extends DatabaseRepository implements IAssetRepository {
         .where()
         .ownerIdEqualToAnyChecksum(fastHash(userId))
         .filter()
-        .visibilityEqualTo(AssetVisibilityEnum.timeline)
+        .visibilityEqualTo(AssetVisibility.timeline)
         .sortByFileCreatedAtDesc()
         .findAll();
   }
@@ -242,7 +242,7 @@ class AssetRepository extends DatabaseRepository implements IAssetRepository {
         .where()
         .ownerIdEqualToAnyChecksum(fastHash(userId))
         .filter()
-        .visibilityEqualTo(AssetVisibilityEnum.timeline)
+        .visibilityEqualTo(AssetVisibility.timeline)
         .livePhotoVideoIdIsNotNull()
         .findAll();
   }

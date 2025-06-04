@@ -106,7 +106,7 @@ class AlbumSortByOptions extends _$AlbumSortByOptions {
   AlbumSortMode build() {
     final sortOpt = ref
         .watch(appSettingsServiceProvider)
-        .getSetting(AppSettingsEnum.selectedAlbumSortOrder);
+        .getSetting(AppSettingsEnum.selectedAlbumAssetOrder);
     return AlbumSortMode.values.firstWhere(
       (e) => e.storeIndex == sortOpt,
       orElse: () => AlbumSortMode.title,
@@ -116,14 +116,14 @@ class AlbumSortByOptions extends _$AlbumSortByOptions {
   void changeSortMode(AlbumSortMode sortOption) {
     state = sortOption;
     ref.watch(appSettingsServiceProvider).setSetting(
-          AppSettingsEnum.selectedAlbumSortOrder,
+          AppSettingsEnum.selectedAlbumAssetOrder,
           sortOption.storeIndex,
         );
   }
 }
 
 @riverpod
-class AlbumSortOrder extends _$AlbumSortOrder {
+class AlbumAssetOrder extends _$AlbumAssetOrder {
   @override
   bool build() {
     return ref

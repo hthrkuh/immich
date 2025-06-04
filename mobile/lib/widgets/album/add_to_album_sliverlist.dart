@@ -23,7 +23,7 @@ class AddToAlbumSliverList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final albumSortMode = ref.watch(albumSortByOptionsProvider);
-    final albumSortIsReverse = ref.watch(albumSortOrderProvider);
+    final albumSortIsReverse = ref.watch(albumAssetOrderProvider);
     final sortedAlbums = albumSortMode.sortFn(albums, albumSortIsReverse);
     final sortedSharedAlbums =
         albumSortMode.sortFn(sharedAlbums, albumSortIsReverse);

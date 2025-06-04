@@ -50,9 +50,9 @@ class SearchService {
     try {
       SearchResponseDto? response;
       AssetType? type;
-      if (filter.mediaType == AssetType.image) {
+      if (filter.mediaType == AssetType.IMAGE) {
         type = AssetType.IMAGE;
-      } else if (filter.mediaType == AssetType.video) {
+      } else if (filter.mediaType == AssetType.VIDEO) {
         type = AssetType.VIDEO;
       }
 

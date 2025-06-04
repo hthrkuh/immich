@@ -4,6 +4,7 @@ import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/extensions/asset_extensions.dart';
 import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
+import 'package:openapi/api.dart';
 
 ExifInfo makeExif({
   DateTime? dateTimeOriginal,
@@ -29,7 +30,7 @@ Asset makeAsset({
     fileModifiedAt: DateTime.now(),
     updatedAt: DateTime.now(),
     durationInSeconds: 0,
-    type: AssetType.image,
+    type: AssetType.IMAGE,
     fileName: id,
     isFavorite: false,
     isArchived: false,

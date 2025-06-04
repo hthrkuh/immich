@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/domain/models/store.model.dart';
 import 'package:immich_mobile/domain/services/user.service.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
@@ -13,6 +12,7 @@ import 'package:immich_mobile/services/etag.service.dart';
 import 'package:immich_mobile/services/exif.service.dart';
 import 'package:immich_mobile/services/sync.service.dart';
 import 'package:logging/logging.dart';
+import 'package:openapi/api.dart';
 
 final assetProvider = StateNotifierProvider<AssetNotifier, bool>((ref) {
   return AssetNotifier(
@@ -174,7 +174,7 @@ class AssetNotifier extends StateNotifier<bool> {
 
   Future<void> setLockedView(
     List<Asset> selection,
-    AssetVisibilityEnum visibility,
+    AssetVisibility visibility,
   ) {
     return _assetService.setVisibility(selection, visibility);
   }

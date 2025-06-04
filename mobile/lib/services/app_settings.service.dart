@@ -55,9 +55,9 @@ enum AppSettingsEnum<T> {
     "albumThumbnailCacheSize",
     200,
   ),
-  selectedAlbumSortOrder<int>(
-    StoreKey.selectedAlbumSortOrder,
-    "selectedAlbumSortOrder",
+  selectedAlbumAssetOrder<int>(
+    StoreKey.selectedAlbumAssetOrder,
+    "selectedAlbumAssetOrder",
     0,
   ),
   advancedTroubleshooting<bool>(StoreKey.advancedTroubleshooting, null, false),

@@ -148,9 +148,9 @@ class AlbumViewerAppbar extends HookConsumerWidget
       // }
     }
 
-    void onSortOrderToggled() async {
+    void onAssetOrderToggled() async {
       final updatedAlbum =
-          await ref.read(albumProvider.notifier).toggleSortOrder(album);
+          await ref.read(albumProvider.notifier).toggleAssetOrder(album);
 
       if (updatedAlbum == null) {
         ImmichToast.show(
@@ -182,7 +182,7 @@ class AlbumViewerAppbar extends HookConsumerWidget
         ),
         ListTile(
           leading: const Icon(Icons.swap_vert_rounded),
-          onTap: onSortOrderToggled,
+          onTap: onAssetOrderToggled,
           title: const Text(
             "change_display_order",
             style: TextStyle(fontWeight: FontWeight.w500),

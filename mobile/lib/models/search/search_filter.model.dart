@@ -274,7 +274,7 @@ class SearchFilter {
         display.isNotInAlbum == false &&
         display.isArchive == false &&
         display.isFavorite == false &&
-        mediaType == AssetType.other;
+        mediaType == AssetType.OTHER;
   }
 
   SearchFilter copyWith({

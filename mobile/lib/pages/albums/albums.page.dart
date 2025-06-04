@@ -29,7 +29,7 @@ class AlbumsPage extends HookConsumerWidget {
     final albums =
         ref.watch(albumProvider).where((album) => album.isRemote).toList();
     final albumSortOption = ref.watch(albumSortByOptionsProvider);
-    final albumSortIsReverse = ref.watch(albumSortOrderProvider);
+    final albumSortIsReverse = ref.watch(albumAssetOrderProvider);
     final sorted = albumSortOption.sortFn(albums, albumSortIsReverse);
     final isGrid = useState(false);
     final searchController = useTextEditingController();
@@ -322,7 +322,7 @@ class SortButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final albumSortOption = ref.watch(albumSortByOptionsProvider);
-    final albumSortIsReverse = ref.watch(albumSortOrderProvider);
+    final albumSortIsReverse = ref.watch(albumAssetOrderProvider);
 
     return MenuAnchor(
       style: MenuStyle(
@@ -360,7 +360,7 @@ class SortButton extends ConsumerWidget {
                 // Switch direction
                 if (selected) {
                   ref
-                      .read(albumSortOrderProvider.notifier)
+                      .read(albumAssetOrderProvider.notifier)
                       .changeSortDirection(!albumSortIsReverse);
                 } else {
                   ref

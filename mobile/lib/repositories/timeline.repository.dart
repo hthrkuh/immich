@@ -1,5 +1,4 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/album.entity.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/infrastructure/entities/user.entity.dart';
@@ -8,6 +7,7 @@ import 'package:immich_mobile/providers/db.provider.dart';
 import 'package:immich_mobile/repositories/database.repository.dart';
 import 'package:immich_mobile/utils/hash.dart';
 import 'package:immich_mobile/widgets/asset_grid/asset_grid_data_structure.dart';
+import 'package:openapi/api.dart';
 import 'package:isar/isar.dart';
 
 final timelineRepositoryProvider =
@@ -46,7 +46,7 @@ class TimelineRepository extends DatabaseRepository
         .ownerIdEqualToAnyChecksum(fastHash(userId))
         .filter()
         .isTrashedEqualTo(false)
-        .visibilityEqualTo(AssetVisibilityEnum.archive)
+        .visibilityEqualTo(AssetVisibility.archive)
         .sortByFileCreatedAtDesc();
 
     return _watchRenderList(query, GroupAssetsBy.none);
@@ -60,7 +60,7 @@ class TimelineRepository extends DatabaseRepository
         .filter()
         .isFavoriteEqualTo(true)
         .not()
-        .visibilityEqualTo(AssetVisibilityEnum.locked)
+        .visibilityEqualTo(AssetVisibility.locked)
         .isTrashedEqualTo(false)
         .sortByFileCreatedAtDesc();
 
@@ -76,11 +76,11 @@ class TimelineRepository extends DatabaseRepository
         .filter()
         .isTrashedEqualTo(false)
         .not()
-        .visibilityEqualTo(AssetVisibilityEnum.locked);
+        .visibilityEqualTo(AssetVisibility.locked);
 
-    final withSortedOption = switch (album.sortOrder) {
-      SortOrder.asc => query.sortByFileCreatedAt(),
-      SortOrder.desc => query.sortByFileCreatedAtDesc(),
+    final withSortedOption = switch (album.assetOrder) {
+      AssetOrder.asc => query.sortByFileCreatedAt(),
+      AssetOrder.desc => query.sortByFileCreatedAtDesc(),
     };
 
     return _watchRenderList(withSortedOption, groupAssetByOption);
@@ -104,8 +104,8 @@ class TimelineRepository extends DatabaseRepository
         .ownerIdEqualToAnyChecksum(fastHash(userId))
         .filter()
         .isTrashedEqualTo(false)
-        .visibilityEqualTo(AssetVisibilityEnum.timeline)
-        .typeEqualTo(AssetType.video)
+        .visibilityEqualTo(AssetVisibility.timeline)
+        .typeEqualTo(AssetType.VIDEO)
         .sortByFileCreatedAtDesc();
 
     return _watchRenderList(query, GroupAssetsBy.none);
@@ -122,7 +122,7 @@ class TimelineRepository extends DatabaseRepository
         .filter()
         .isTrashedEqualTo(false)
         .stackPrimaryAssetIdIsNull()
-        .visibilityEqualTo(AssetVisibilityEnum.timeline)
+        .visibilityEqualTo(AssetVisibility.timeline)
         .sortByFileCreatedAtDesc();
 
     return _watchRenderList(query, groupAssetByOption);
@@ -139,7 +139,7 @@ class TimelineRepository extends DatabaseRepository
         .anyOf(isarUserIds, (qb, id) => qb.ownerIdEqualToAnyChecksum(id))
         .filter()
         .isTrashedEqualTo(false)
-        .visibilityEqualTo(AssetVisibilityEnum.timeline)
+        .visibilityEqualTo(AssetVisibility.timeline)
         .stackPrimaryAssetIdIsNull()
         .sortByFileCreatedAtDesc();
     return _watchRenderList(query, groupAssetByOption);
@@ -160,7 +160,7 @@ class TimelineRepository extends DatabaseRepository
         .remoteIdIsNotNull()
         .filter()
         .ownerIdEqualTo(fastHash(userId))
-        .visibilityEqualTo(AssetVisibilityEnum.timeline)
+        .visibilityEqualTo(AssetVisibility.timeline)
         .isTrashedEqualTo(false)
         .stackPrimaryAssetIdIsNull()
         .sortByFileCreatedAtDesc();
@@ -177,7 +177,7 @@ class TimelineRepository extends DatabaseRepository
         .where()
         .ownerIdEqualToAnyChecksum(fastHash(userId))
         .filter()
-        .visibilityEqualTo(AssetVisibilityEnum.locked)
+        .visibilityEqualTo(AssetVisibility.locked)
         .isTrashedEqualTo(false)
         .sortByFileCreatedAtDesc();
 

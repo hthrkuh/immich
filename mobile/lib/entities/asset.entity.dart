@@ -26,7 +26,7 @@ class Asset {
         fileModifiedAt = remote.fileModifiedAt,
         updatedAt = remote.updatedAt,
         durationInSeconds = remote.duration.toDuration()?.inSeconds ?? 0,
-        type = remote.type.toAssetType(),
+        type = remote.type,
         fileName = remote.originalFileName,
         height = remote.exifInfo?.exifImageHeight?.toInt(),
         width = remote.exifInfo?.exifImageWidth?.toInt(),
@@ -47,7 +47,7 @@ class Asset {
         stackCount = remote.stack?.assetCount ?? 0,
         stackId = remote.stack?.id,
         thumbhash = remote.thumbhash,
-        visibility = getVisibility(remote.visibility);
+        visibility = remote.visibility;
 
   Asset({
     this.id = Isar.autoIncrement,
@@ -73,7 +73,7 @@ class Asset {
     this.stackCount = 0,
     this.isOffline = false,
     this.thumbhash,
-    this.visibility = AssetVisibilityEnum.timeline,
+    this.visibility = AssetVisibility.timeline,
   });
 
   @ignore
@@ -177,7 +177,7 @@ class Asset {
   int stackCount;
 
   @Enumerated(EnumType.ordinal)
-  AssetVisibilityEnum visibility;
+  AssetVisibility visibility;
 
   /// Returns null if the asset has no sync access to the exif info
   @ignore
@@ -210,10 +210,10 @@ class Asset {
   bool get isRemote => remoteId != null;
 
   @ignore
-  bool get isImage => type == AssetType.image;
+  bool get isImage => type == AssetType.IMAGE;
 
   @ignore
-  bool get isVideo => type == AssetType.video;
+  bool get isVideo => type == AssetType.VIDEO;
 
   @ignore
   bool get isMotionPhoto => livePhotoVideoId != null;
@@ -459,7 +459,7 @@ class Asset {
     String? stackPrimaryAssetId,
     int? stackCount,
     String? thumbhash,
-    AssetVisibilityEnum? visibility,
+    AssetVisibility? visibility,
   }) =>
       Asset(
         id: id ?? this.id,
@@ -553,27 +553,6 @@ class Asset {
   "visibility": "$visibility",
 }""";
   }
-
-  static getVisibility(AssetVisibility visibility) {
-    switch (visibility) {
-      case AssetVisibility.timeline:
-        return AssetVisibilityEnum.timeline;
-      case AssetVisibility.archive:
-        return AssetVisibilityEnum.archive;
-      case AssetVisibility.hidden:
-        return AssetVisibilityEnum.hidden;
-      case AssetVisibility.locked:
-        return AssetVisibilityEnum.locked;
-    }
-  }
-}
-
-enum AssetType {
-  // do not change this order!
-  other,
-  image,
-  video,
-  audio,
 }
 
 /// Describes where the information of this asset came from:

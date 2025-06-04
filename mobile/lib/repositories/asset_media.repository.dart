@@ -6,6 +6,7 @@ import 'package:immich_mobile/entities/store.entity.dart';
 import 'package:immich_mobile/interfaces/asset_media.interface.dart';
 import 'package:immich_mobile/utils/hash.dart';
 import 'package:photo_manager/photo_manager.dart' hide AssetType;
+import 'package:openapi/api.dart';
 
 final assetMediaRepositoryProvider = Provider((ref) => AssetMediaRepository());
 

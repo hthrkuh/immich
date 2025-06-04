@@ -165,7 +165,7 @@ class DriftSyncStreamRepository extends DriftDatabaseRepository
         for (final asset in data) {
           final companion = RemoteAssetEntityCompanion(
             name: Value(asset.originalFileName),
-            type: Value(asset.type.toAssetType()),
+            type: Value(asset.type),
             createdAt: Value.absentIfNull(asset.fileCreatedAt),
             updatedAt: Value.absentIfNull(asset.fileModifiedAt),
             durationInSeconds: const Value(0),

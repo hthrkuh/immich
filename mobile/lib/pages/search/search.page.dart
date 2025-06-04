@@ -5,7 +5,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:immich_mobile/constants/enums.dart';
 import 'package:immich_mobile/entities/asset.entity.dart';
 import 'package:immich_mobile/extensions/build_context_extensions.dart';
 import 'package:immich_mobile/interfaces/person_api.interface.dart';
@@ -23,6 +22,7 @@ import 'package:immich_mobile/widgets/search/search_filter/media_type_picker.dar
 import 'package:immich_mobile/widgets/search/search_filter/people_picker.dart';
 import 'package:immich_mobile/widgets/search/search_filter/search_filter_chip.dart';
 import 'package:immich_mobile/widgets/search/search_filter/search_filter_utils.dart';
+import 'package:openapi/api.dart';
 
 @RoutePage()
 class SearchPage extends HookConsumerWidget {
@@ -47,7 +47,7 @@ class SearchPage extends HookConsumerWidget {
               isArchive: false,
               isFavorite: false,
             ),
-        mediaType: prefilter?.mediaType ?? AssetType.other,
+        mediaType: prefilter?.mediaType ?? AssetType.OTHER,
         language:
             "${context.locale.languageCode}-${context.locale.countryCode}",
       ),
@@ -371,9 +371,9 @@ class SearchPage extends HookConsumerWidget {
         );
 
         mediaTypeCurrentFilterWidget.value = Text(
-          assetType == AssetType.image
+          assetType == AssetType.IMAGE
               ? 'image'.tr()
-              : assetType == AssetType.video
+              : assetType == AssetType.VIDEO
                   ? 'video'.tr()
                   : 'all'.tr(),
           style: context.textTheme.labelLarge,
@@ -382,7 +382,7 @@ class SearchPage extends HookConsumerWidget {
 
       handleClear() {
         filter.value = filter.value.copyWith(
-          mediaType: AssetType.other,
+          mediaType: AssetType.OTHER,
         );
 
         mediaTypeCurrentFilterWidget.value = null;

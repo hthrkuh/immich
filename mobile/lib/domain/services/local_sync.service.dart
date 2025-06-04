@@ -12,6 +12,7 @@ import 'package:immich_mobile/presentation/pages/dev/dev_logger.dart';
 import 'package:immich_mobile/utils/diff.dart';
 import 'package:logging/logging.dart';
 import 'package:platform/platform.dart';
+import 'package:openapi/api.dart';
 
 class LocalSyncService {
   final ILocalAlbumRepository _localAlbumRepository;
@@ -365,7 +366,7 @@ extension on Iterable<PlatformAsset> {
       (e) => LocalAsset(
         id: e.id,
         name: e.name,
-        type: AssetType.values.elementAtOrNull(e.type) ?? AssetType.other,
+        type: AssetType.values.elementAtOrNull(e.type) ?? AssetType.OTHER,
         createdAt: e.createdAt == null
             ? DateTime.now()
             : DateTime.fromMillisecondsSinceEpoch(e.createdAt! * 1000),

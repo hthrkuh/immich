@@ -33,7 +33,7 @@ enum StoreKey<T> {
   thumbnailCacheSize<int>._(110),
   imageCacheSize<int>._(111),
   albumThumbnailCacheSize<int>._(112),
-  selectedAlbumSortOrder<int>._(113),
+  selectedAlbumAssetOrder<int>._(113),
   advancedTroubleshooting<bool>._(114),
   logLevel<int>._(115),
   preferRemoteImage<bool>._(116),
