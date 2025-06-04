@@ -34,7 +34,7 @@ import {
   updateAssets,
   type AlbumResponseDto,
   type AssetResponseDto,
-  type AssetTypeEnum,
+  type AssetType,
   type DownloadInfoDto,
   type StackResponseDto,
   type UserPreferencesResponseDto,
@@ -355,7 +355,7 @@ export function isWebCompatibleImage(asset: AssetResponseDto): boolean {
   return supportedImageMimeTypes.has(asset.originalMimeType);
 }
 
-export const getAssetType = (type: AssetTypeEnum) => {
+export const getAssetType = (type: AssetType) => {
   switch (type) {
     case 'IMAGE': {
       return 'Photo';

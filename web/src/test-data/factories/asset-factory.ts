@@ -1,7 +1,7 @@
 import type { TimelineAsset } from '$lib/stores/assets-store.svelte';
 import { fromLocalDateTimeToObject, fromTimelinePlainDateTime } from '$lib/utils/timeline-util';
 import { faker } from '@faker-js/faker';
-import { AssetTypeEnum, AssetVisibility, type AssetResponseDto, type TimeBucketAssetResponseDto } from '@immich/sdk';
+import { AssetType, AssetVisibility, type AssetResponseDto, type TimeBucketAssetResponseDto } from '@immich/sdk';
 import { Sync } from 'factory.ts';
 
 export const assetFactory = Sync.makeFactory<AssetResponseDto>({
@@ -10,7 +10,7 @@ export const assetFactory = Sync.makeFactory<AssetResponseDto>({
   ownerId: Sync.each(() => faker.string.uuid()),
   deviceId: '',
   libraryId: Sync.each(() => faker.string.uuid()),
-  type: Sync.each(() => faker.helpers.enumValue(AssetTypeEnum)),
+  type: Sync.each(() => faker.helpers.enumValue(AssetType)),
   originalPath: Sync.each(() => faker.system.filePath()),
   originalFileName: Sync.each(() => faker.system.fileName()),
   originalMimeType: Sync.each(() => faker.system.mimeType()),

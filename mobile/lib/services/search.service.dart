@@ -49,11 +49,11 @@ class SearchService {
   Future<SearchResult?> search(SearchFilter filter, int page) async {
     try {
       SearchResponseDto? response;
-      AssetTypeEnum? type;
+      AssetType? type;
       if (filter.mediaType == AssetType.image) {
-        type = AssetTypeEnum.IMAGE;
+        type = AssetType.IMAGE;
       } else if (filter.mediaType == AssetType.video) {
-        type = AssetTypeEnum.VIDEO;
+        type = AssetType.VIDEO;
       }
 
       if (filter.context != null && filter.context!.isNotEmpty) {

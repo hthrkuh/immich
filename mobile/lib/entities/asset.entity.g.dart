@@ -111,7 +111,7 @@ const AssetSchema = CollectionSchema(
       id: 18,
       name: r'type',
       type: IsarType.byte,
-      enumMap: _AssettypeEnumValueMap,
+      enumMap: _AssetTypeValueMap,
     ),
     r'updatedAt': PropertySchema(
       id: 19,
@@ -361,7 +361,7 @@ P _assetDeserializeProp<P>(
   }
 }
 
-const _AssettypeEnumValueMap = {
+const _AssetTypeValueMap = {
   'other': 0,
   'image': 1,
   'video': 2,

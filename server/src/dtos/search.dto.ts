@@ -19,7 +19,7 @@ class BaseSearchDto {
 
   @IsEnum(AssetType)
   @Optional()
-  @ApiProperty({ enumName: 'AssetTypeEnum', enum: AssetType })
+  @ApiProperty({ enumName: 'AssetType', enum: AssetType })
   type?: AssetType;
 
   @ValidateBoolean({ optional: true })

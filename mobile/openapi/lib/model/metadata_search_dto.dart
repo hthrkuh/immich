@@ -286,7 +286,7 @@ class MetadataSearchDto {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  AssetTypeEnum? type;
+  AssetType? type;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -688,7 +688,7 @@ class MetadataSearchDto {
         thumbnailPath: mapValueOfType<String>(json, r'thumbnailPath'),
         trashedAfter: mapDateTime(json, r'trashedAfter', r''),
         trashedBefore: mapDateTime(json, r'trashedBefore', r''),
-        type: AssetTypeEnum.fromJson(json[r'type']),
+        type: AssetType.fromJson(json[r'type']),
         updatedAfter: mapDateTime(json, r'updatedAfter', r''),
         updatedBefore: mapDateTime(json, r'updatedBefore', r''),
         visibility: AssetVisibility.fromJson(json[r'visibility']),

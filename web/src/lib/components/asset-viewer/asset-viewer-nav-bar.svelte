@@ -28,7 +28,7 @@
   import { toTimelineAsset } from '$lib/utils/timeline-util';
   import {
     AssetJobName,
-    AssetTypeEnum,
+    AssetType,
     AssetVisibility,
     type AlbumResponseDto,
     type AssetResponseDto,
@@ -99,7 +99,7 @@
 
   // $: showEditorButton =
   //   isOwner &&
-  //   asset.type === AssetTypeEnum.Image &&
+  //   asset.type === AssetType.Image &&
   //   !(
   //     asset.exifInfo?.projectionType === ProjectionType.EQUIRECTANGULAR ||
   //     (asset.originalPath && asset.originalPath.toLowerCase().endsWith('.insp'))
@@ -134,7 +134,7 @@
     {#if asset.livePhotoVideoId}
       {@render motionPhoto?.()}
     {/if}
-    {#if asset.type === AssetTypeEnum.Image}
+    {#if asset.type === AssetType.Image}
       <IconButton
         class="hidden sm:flex"
         color="secondary"
@@ -145,7 +145,7 @@
         onclick={onZoomImage}
       />
     {/if}
-    {#if canCopyImageToClipboard() && asset.type === AssetTypeEnum.Image}
+    {#if canCopyImageToClipboard() && asset.type === AssetType.Image}
       <IconButton
         color="secondary"
         variant="ghost"
@@ -199,7 +199,7 @@
           {#if person}
             <SetFeaturedPhotoAction {asset} {person} />
           {/if}
-          {#if asset.type === AssetTypeEnum.Image && !isLocked}
+          {#if asset.type === AssetType.Image && !isLocked}
             <SetProfilePictureAction {asset} />
           {/if}
 
@@ -238,7 +238,7 @@
             onClick={() => onRunJob(AssetJobName.RegenerateThumbnail)}
             text={$getAssetJobName(AssetJobName.RegenerateThumbnail)}
           />
-          {#if asset.type === AssetTypeEnum.Video}
+          {#if asset.type === AssetType.Video}
             <MenuOption
               icon={mdiCogRefreshOutline}
               onClick={() => onRunJob(AssetJobName.TranscodeVideo)}

@@ -334,7 +334,7 @@ export type AssetResponseDto = {
     stack?: (AssetStackResponseDto) | null;
     tags?: TagResponseDto[];
     thumbhash: string | null;
-    "type": AssetTypeEnum;
+    "type": AssetType;
     unassignedFaces?: AssetFaceWithoutPersonResponseDto[];
     updatedAt: string;
     visibility: AssetVisibility;
@@ -874,7 +874,7 @@ export type MetadataSearchDto = {
     thumbnailPath?: string;
     trashedAfter?: string;
     trashedBefore?: string;
-    "type"?: AssetTypeEnum;
+    "type"?: AssetType;
     updatedAfter?: string;
     updatedBefore?: string;
     visibility?: AssetVisibility;
@@ -939,7 +939,7 @@ export type RandomSearchDto = {
     takenBefore?: string;
     trashedAfter?: string;
     trashedBefore?: string;
-    "type"?: AssetTypeEnum;
+    "type"?: AssetType;
     updatedAfter?: string;
     updatedBefore?: string;
     visibility?: AssetVisibility;
@@ -975,7 +975,7 @@ export type SmartSearchDto = {
     takenBefore?: string;
     trashedAfter?: string;
     trashedBefore?: string;
-    "type"?: AssetTypeEnum;
+    "type"?: AssetType;
     updatedAfter?: string;
     updatedBefore?: string;
     visibility?: AssetVisibility;
@@ -3741,7 +3741,7 @@ export enum SourceType {
     Exif = "exif",
     Manual = "manual"
 }
-export enum AssetTypeEnum {
+export enum AssetType {
     Image = "IMAGE",
     Video = "VIDEO",
     Audio = "AUDIO",

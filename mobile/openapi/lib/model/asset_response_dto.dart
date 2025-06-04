@@ -127,7 +127,7 @@ class AssetResponseDto {
 
   String? thumbhash;
 
-  AssetTypeEnum type;
+  AssetType type;
 
   List<AssetFaceWithoutPersonResponseDto> unassignedFaces;
 
@@ -315,7 +315,7 @@ class AssetResponseDto {
         stack: AssetStackResponseDto.fromJson(json[r'stack']),
         tags: TagResponseDto.listFromJson(json[r'tags']),
         thumbhash: mapValueOfType<String>(json, r'thumbhash'),
-        type: AssetTypeEnum.fromJson(json[r'type'])!,
+        type: AssetType.fromJson(json[r'type'])!,
         unassignedFaces: AssetFaceWithoutPersonResponseDto.listFromJson(json[r'unassignedFaces']),
         updatedAt: mapDateTime(json, r'updatedAt', r'')!,
         visibility: AssetVisibility.fromJson(json[r'visibility'])!,

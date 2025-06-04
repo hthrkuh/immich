@@ -1,7 +1,7 @@
 import type { TimelineAsset } from '$lib/stores/assets-store.svelte';
 import { locale } from '$lib/stores/preferences.store';
 import { getAssetRatio } from '$lib/utils/asset-utils';
-import { AssetTypeEnum, type AssetResponseDto } from '@immich/sdk';
+import { AssetType, type AssetResponseDto } from '@immich/sdk';
 import { DateTime, type LocaleOptions } from 'luxon';
 import { get } from 'svelte/store';
 
@@ -113,8 +113,8 @@ export const toTimelineAsset = (unknownAsset: AssetResponseDto | TimelineAsset):
     isFavorite: assetResponse.isFavorite,
     visibility: assetResponse.visibility,
     isTrashed: assetResponse.isTrashed,
-    isVideo: assetResponse.type == AssetTypeEnum.Video,
-    isImage: assetResponse.type == AssetTypeEnum.Image,
+    isVideo: assetResponse.type == AssetType.Video,
+    isImage: assetResponse.type == AssetType.Image,
     stack: assetResponse.stack || null,
     duration: assetResponse.duration || null,
     projectionType: assetResponse.exifInfo?.projectionType || null,

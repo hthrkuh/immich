@@ -2,7 +2,7 @@ import {
   AssetMediaResponseDto,
   AssetMediaStatus,
   AssetResponseDto,
-  AssetTypeEnum,
+  AssetType,
   AssetVisibility,
   getAssetInfo,
   getMyUser,
@@ -826,7 +826,7 @@ describe('/asset', () => {
       {
         input: 'formats/avif/8bit-sRGB.avif',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: '8bit-sRGB.avif',
           exifInfo: {
             description: '',
@@ -839,7 +839,7 @@ describe('/asset', () => {
       {
         input: 'formats/jpg/el_torcal_rocks.jpg',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'el_torcal_rocks.jpg',
           exifInfo: {
             dateTimeOriginal: '2012-08-05T11:39:59+00:00',
@@ -859,7 +859,7 @@ describe('/asset', () => {
       {
         input: 'formats/jxl/8bit-sRGB.jxl',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: '8bit-sRGB.jxl',
           exifInfo: {
             description: '',
@@ -872,7 +872,7 @@ describe('/asset', () => {
       {
         input: 'formats/heic/IMG_2682.heic',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'IMG_2682.heic',
           fileCreatedAt: '2019-03-21T16:04:22.348Z',
           exifInfo: {
@@ -896,7 +896,7 @@ describe('/asset', () => {
       {
         input: 'formats/png/density_plot.png',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'density_plot.png',
           exifInfo: {
             exifImageWidth: 800,
@@ -908,7 +908,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Nikon/D80/glarus.nef',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'glarus.nef',
           fileCreatedAt: '2010-07-20T17:27:12.000Z',
           exifInfo: {
@@ -927,7 +927,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Nikon/D700/philadelphia.nef',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'philadelphia.nef',
           fileCreatedAt: '2016-09-22T21:10:29.060Z',
           exifInfo: {
@@ -947,7 +947,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Panasonic/DMC-GH4/4_3.rw2',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: '4_3.rw2',
           fileCreatedAt: '2018-05-10T08:42:37.842Z',
           exifInfo: {
@@ -968,7 +968,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Sony/ILCE-6300/12bit-compressed-(3_2).arw',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: '12bit-compressed-(3_2).arw',
           fileCreatedAt: '2016-09-27T10:51:44.000Z',
           exifInfo: {
@@ -990,7 +990,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Sony/ILCE-7M2/14bit-uncompressed-(3_2).arw',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: '14bit-uncompressed-(3_2).arw',
           fileCreatedAt: '2016-01-08T14:08:01.000Z',
           exifInfo: {
@@ -1012,7 +1012,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Canon/PowerShot_G12.CR2',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'PowerShot_G12.CR2',
           fileCreatedAt: '2015-12-27T09:55:40.000Z',
           exifInfo: {
@@ -1036,7 +1036,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Fujifilm/X100V_compressed.RAF',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'X100V_compressed.RAF',
           fileCreatedAt: '2024-10-12T21:01:01.000Z',
           exifInfo: {
@@ -1060,7 +1060,7 @@ describe('/asset', () => {
       {
         input: 'formats/raw/Ricoh/GR3/Ricoh_GR3-450.DNG',
         expected: {
-          type: AssetTypeEnum.Image,
+          type: AssetType.Image,
           originalFileName: 'Ricoh_GR3-450.DNG',
           fileCreatedAt: '2024-06-08T13:48:39.000Z',
           exifInfo: {

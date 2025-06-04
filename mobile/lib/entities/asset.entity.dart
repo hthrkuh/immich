@@ -576,16 +576,6 @@ enum AssetType {
   audio,
 }
 
-extension AssetTypeEnumHelper on AssetTypeEnum {
-  AssetType toAssetType() => switch (this) {
-        AssetTypeEnum.IMAGE => AssetType.image,
-        AssetTypeEnum.VIDEO => AssetType.video,
-        AssetTypeEnum.AUDIO => AssetType.audio,
-        AssetTypeEnum.OTHER => AssetType.other,
-        _ => throw Exception(),
-      };
-}
-
 /// Describes where the information of this asset came from:
 /// only from the local device, only from the remote server or merged from both
 enum AssetState {

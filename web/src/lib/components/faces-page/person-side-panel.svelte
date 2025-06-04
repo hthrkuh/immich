@@ -12,7 +12,7 @@
   import { zoomImageToBase64 } from '$lib/utils/people-utils';
   import { getPersonNameWithHiddenValue } from '$lib/utils/person';
   import {
-    AssetTypeEnum,
+    AssetType,
     createPerson,
     deleteFace,
     getFaces,
@@ -20,6 +20,7 @@
     type AssetFaceResponseDto,
     type PersonResponseDto,
   } from '@immich/sdk';
+  import { IconButton } from '@immich/ui';
   import { mdiAccountOff, mdiArrowLeftThin, mdiPencil, mdiRestart, mdiTrashCan } from '@mdi/js';
   import { onMount } from 'svelte';
   import { t } from 'svelte-i18n';
@@ -28,11 +29,10 @@
   import ImageThumbnail from '../assets/thumbnail/image-thumbnail.svelte';
   import { NotificationType, notificationController } from '../shared-components/notification/notification';
   import AssignFaceSidePanel from './assign-face-side-panel.svelte';
-  import { IconButton } from '@immich/ui';
 
   interface Props {
     assetId: string;
-    assetType: AssetTypeEnum;
+    assetType: AssetType;
     onClose: () => void;
     onRefresh: () => void;
   }

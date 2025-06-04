@@ -18,7 +18,7 @@ import { mimeTypes } from 'src/utils/mime-types';
 
 export class SanitizedAssetResponseDto {
   id!: string;
-  @ApiProperty({ enumName: 'AssetTypeEnum', enum: AssetType })
+  @ApiProperty({ enumName: 'AssetType', enum: AssetType })
   type!: AssetType;
   thumbhash!: string | null;
   originalMimeType?: string;

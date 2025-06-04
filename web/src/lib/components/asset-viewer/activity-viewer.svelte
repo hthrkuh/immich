@@ -11,7 +11,7 @@
   import { getAssetType } from '$lib/utils/asset-utils';
   import { handleError } from '$lib/utils/handle-error';
   import { isTenMinutesApart } from '$lib/utils/timesince';
-  import { ReactionType, type ActivityResponseDto, type AssetTypeEnum, type UserResponseDto } from '@immich/sdk';
+  import { ReactionType, type ActivityResponseDto, type AssetType, type UserResponseDto } from '@immich/sdk';
   import { IconButton } from '@immich/ui';
   import { mdiClose, mdiDeleteOutline, mdiDotsVertical, mdiHeart, mdiSend } from '@mdi/js';
   import * as luxon from 'luxon';
@@ -43,7 +43,7 @@
     user: UserResponseDto;
     assetId?: string | undefined;
     albumId: string;
-    assetType?: AssetTypeEnum | undefined;
+    assetType?: AssetType | undefined;
     albumOwnerId: string;
     disabled: boolean;
     onClose: () => void;

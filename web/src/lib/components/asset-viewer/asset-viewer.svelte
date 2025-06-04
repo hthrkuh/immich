@@ -21,7 +21,7 @@
   import { toTimelineAsset } from '$lib/utils/timeline-util';
   import {
     AssetJobName,
-    AssetTypeEnum,
+    AssetType,
     getAllAlbums,
     getStack,
     runAssetJobs,
@@ -438,7 +438,7 @@
   <div class="z-[-1] relative col-start-1 col-span-4 row-start-1 row-span-full">
     {#if previewStackedAsset}
       {#key previewStackedAsset.id}
-        {#if previewStackedAsset.type === AssetTypeEnum.Image}
+        {#if previewStackedAsset.type === AssetType.Image}
           <PhotoViewer
             bind:zoomToggle
             bind:copyImage
@@ -465,7 +465,7 @@
       {/key}
     {:else}
       {#key asset.id}
-        {#if asset.type === AssetTypeEnum.Image}
+        {#if asset.type === AssetType.Image}
           {#if shouldPlayMotionPhoto && asset.livePhotoVideoId}
             <VideoViewer
               assetId={asset.livePhotoVideoId}
