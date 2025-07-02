@@ -6,6 +6,7 @@ export type AssetApiGetTimeBucketsRequest = Parameters<typeof import('@immich/sd
 export type AssetStoreOptions = Omit<AssetApiGetTimeBucketsRequest, 'size'> & {
   timelineAlbumId?: string;
   deferInit?: boolean;
+  includeSharedAlbums?: boolean;
 };
 
 export type AssetDescriptor = { id: string };

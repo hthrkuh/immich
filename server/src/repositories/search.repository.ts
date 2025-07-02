@@ -110,7 +110,9 @@ type BaseAssetSearchOptions = SearchDateOptions &
   SearchPeopleOptions &
   SearchTagOptions;
 
-export type AssetSearchOptions = BaseAssetSearchOptions & SearchRelationOptions;
+export type AssetSearchOptions = BaseAssetSearchOptions & SearchRelationOptions & {
+  includeSharedAlbums?: boolean;
+};
 
 export type AssetSearchBuilderOptions = Omit<AssetSearchOptions, 'orderDirection'>;
 
@@ -169,7 +171,7 @@ export interface GetCameraMakesOptions {
 @Injectable()
 export class SearchRepository {
   constructor(@InjectKysely() private db: Kysely<DB>) {}
-
+ 
   @GenerateSql({
     params: [
       { page: 1, size: 100 },

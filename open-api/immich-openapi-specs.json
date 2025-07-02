@@ -7392,6 +7392,15 @@
             }
           },
           {
+            "name": "includeSharedAlbums",
+            "required": false,
+            "in": "query",
+            "description": "Include shared albums in the response",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "isFavorite",
             "required": false,
             "in": "query",
@@ -7534,6 +7543,15 @@
             "schema": {
               "format": "uuid",
               "type": "string"
+            }
+          },
+          {
+            "name": "includeSharedAlbums",
+            "required": false,
+            "in": "query",
+            "description": "Include shared albums in the response",
+            "schema": {
+              "type": "boolean"
             }
           },
           {
@@ -10901,6 +10919,10 @@
             "format": "uuid",
             "type": "string"
           },
+          "includeSharedAlbums": {
+            "description": "Include shared albums in search",
+            "type": "boolean"
+          },
           "isEncoded": {
             "type": "boolean"
           },
@@ -12851,6 +12873,10 @@
           },
           "deviceId": {
             "type": "string"
+          },
+          "includeSharedAlbums": {
+            "description": "Include shared albums in search",
+            "type": "boolean"
           },
           "isEncoded": {
             "type": "boolean"

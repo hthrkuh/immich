@@ -39,6 +39,22 @@
   import Portal from '../shared-components/portal/portal.svelte';
   import AssetDateGroup from './asset-date-group.svelte';
   import DeleteAssetDialog from './delete-asset-dialog.svelte';
+  import { writable } from 'svelte/store';
+
+  export const includeSharedAlbums = writable(localStorage.getItem('includeSharedAlbums') === 'true');
+
+  includeSharedAlbums.subscribe((value) => {
+    localStorage.setItem('includeSharedAlbums', JSON.stringify(value));
+  });
+
+  const toggleIncludeSharedAlbums = () => {
+    includeSharedAlbums.update((value) => {
+      const newValue = !value;
+      console.log('Toggling Include Shared Albums:', newValue); // Debugging log
+      assetStore.updateOptions({ includeSharedAlbums: newValue }); // Dynamically update options
+      return newValue;
+    });
+  };
 
   interface Props {
     isSelectionMode?: boolean;
@@ -424,7 +440,17 @@
     deselectAllAssets();
   };
 
+  $effect(() => {
+    const storedIncludeSharedAlbums = localStorage.getItem('includeSharedAlbums');
+    let includeSharedAlbums = storedIncludeSharedAlbums ? JSON.parse(storedIncludeSharedAlbums) : false;
+
+    includeSharedAlbums = storedIncludeSharedAlbums ? JSON.parse(storedIncludeSharedAlbums) : false;
+  });
+
   const handleSelectAsset = (asset: TimelineAsset) => {
+    if (!includeSharedAlbums && !assetStore.albumAssets.has(asset.id)) {
+      return;
+    }
     if (!assetStore.albumAssets.has(asset.id)) {
       assetInteraction.selectAsset(asset);
     }
@@ -552,6 +578,9 @@
   };
 
   const handleGroupSelect = (assetStore: AssetStore, group: string, assets: TimelineAsset[]) => {
+    if (!includeSharedAlbums && !assetStore.albumAssets.has(group)) {
+      return;
+    }
     if (assetInteraction.selectedGroup.has(group)) {
       assetInteraction.removeGroupFromMultiselectGroup(group);
       for (const asset of assets) {
@@ -769,15 +798,25 @@
     title="Navigate to Time"
     initialDate={DateTime.now()}
     timezoneInput={false}
-    onConfirm={async (dateString: string) => {
+    onConfirm={async (dateString) => {
       isShowSelectDate = false;
-      const asset = await assetStore.getClosestAssetToDate((DateTime.fromISO(dateString) as DateTime<true>).toObject());
+      const asset = await assetStore.getClosestAssetToDate(DateTime.fromISO(dateString).toObject());
       if (asset) {
         setFocusAsset(asset);
       }
     }}
     onCancel={() => (isShowSelectDate = false)}
   />
+{/if}
+
+{#if assetStore.buckets.length > 0}
+  <!-- Include Shared Albums Toggle -->
+  <div class="flex items-center gap-2">
+    <label>
+      <input type="checkbox" bind:checked={$includeSharedAlbums} onchange={() => assetStore.updateOptions({ includeSharedAlbums: $includeSharedAlbums })} />
+      Include Shared Albums
+    </label>
+  </div>
 {/if}
 
 {#if assetStore.buckets.length > 0}

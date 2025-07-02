@@ -90,9 +90,9 @@ hygiene-all: lint-all format-all check-all sql audit-all;
 test-all: $(foreach M,$(filter-out sdk docs .github,$(MODULES)),test-$M) ;
 
 clean:
-	find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
-	find . -name "dist" -type d -prune -exec rm -rf '{}' +
-	find . -name "build" -type d -prune -exec rm -rf '{}' +
-	find . -name "svelte-kit" -type d -prune -exec rm -rf '{}' +
+	sudo find . -name "node_modules" -type d -prune -exec rm -rf '{}' +
+	sudo find . -name "dist" -type d -prune -exec rm -rf '{}' +
+	sudo find . -name "build" -type d -prune -exec rm -rf '{}' +
+	sudo find . -name "svelte-kit" -type d -prune -exec rm -rf '{}' +
 	docker compose -f ./docker/docker-compose.dev.yml rm -v -f || true
 	docker compose -f ./e2e/docker-compose.yml rm -v -f || true

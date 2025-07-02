@@ -15,6 +15,7 @@
     display: SearchDisplayFilters;
     mediaType: MediaType;
     rating?: number;
+    includeSharedAlbums: boolean;
   };
 </script>
 
@@ -64,6 +65,15 @@
     return validQueryTypes.has(storedQueryType) ? storedQueryType : QueryType.SMART;
   }
 
+  function storeIncludeSharedAlbumsState(state: boolean) {
+    localStorage.setItem('includeSharedAlbums', JSON.stringify(state));
+  }
+
+  function defaultIncludeSharedAlbumsState(): boolean {
+    const storedState = localStorage.getItem('includeSharedAlbums');
+    return storedState ? JSON.parse(storedState) : false;
+  }
+
   let filter: SearchFilter = $state({
     query: 'query' in searchQuery ? searchQuery.query : searchQuery.originalFileName || '',
     queryType: defaultQueryType(),
@@ -94,6 +104,7 @@
           ? MediaType.Video
           : MediaType.All,
     rating: searchQuery.rating,
+    includeSharedAlbums: defaultIncludeSharedAlbumsState(),
   });
 
   const resetForm = () => {
@@ -112,7 +123,9 @@
       },
       mediaType: MediaType.All,
       rating: undefined,
+      includeSharedAlbums: false,
     };
+    storeIncludeSharedAlbumsState(false);
   };
 
   const search = () => {
@@ -143,8 +156,10 @@
       tagIds: filter.tagIds.size > 0 ? [...filter.tagIds] : undefined,
       type,
       rating: filter.rating,
+      includeSharedAlbums: filter.includeSharedAlbums,
     };
 
+    storeIncludeSharedAlbumsState(filter.includeSharedAlbums);
     onClose(payload);
   };
 
@@ -177,6 +192,12 @@
 
         <!-- TAGS -->
         <SearchTagsSection bind:selectedTags={filter.tagIds} />
+
+        <!-- INCLUDE SHARED ALBUMS TOGGLE -->
+        <div class="flex items-center gap-2">
+          <input id="include-shared-albums" type="checkbox" bind:checked={filter.includeSharedAlbums} />
+          <label for="include-shared-albums">{$t('include_shared_albums') || 'Include shared albums'}</label>
+        </div>
 
         <!-- LOCATION -->
         <SearchLocationSection bind:filters={filter.location} />

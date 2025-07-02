@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Insertable, Kysely, NotNull, Selectable, UpdateResult, Updateable, sql } from 'kysely';
+import { Insertable, Kysely, NotNull, Selectable, sql, Updateable, UpdateResult } from 'kysely';
 import { isEmpty, isUndefined, omitBy } from 'lodash';
 import { InjectKysely } from 'nestjs-kysely';
 import { Stack } from 'src/database';
@@ -69,6 +69,7 @@ export interface AssetBuilderOptions {
 
 export interface TimeBucketOptions extends AssetBuilderOptions {
   order?: AssetOrder;
+  includeSharedAlbums?: boolean; // Added support for shared albums filtering
 }
 
 export interface TimeBucketItem {
@@ -533,62 +534,72 @@ export class AssetRepository {
   @GenerateSql({ params: [{ size: TimeBucketSize.MONTH }] })
   async getTimeBuckets(options: TimeBucketOptions): Promise<TimeBucketItem[]> {
     return this.db
-        .with('assets', (qb: any) =>
-          qb
-            .selectFrom('assets')
-            .select(truncatedDate<Date>(TimeBucketSize.MONTH).as('timeBucket'))
-            .$if(!!options.isTrashed, (qb: any) => qb.where('assets.status', '!=', AssetStatus.DELETED))
-            .where('assets.deletedAt', options.isTrashed ? 'is not' : 'is', null)
-            .$if(options.visibility === undefined, withDefaultVisibility)
-            .$if(!!options.visibility, (qb: any) => qb.where('assets.visibility', '=', options.visibility!))
-            .$if(!!options.albumId, (qb: any) =>
-              qb
-                .innerJoin('albums_assets_assets', 'assets.id', 'albums_assets_assets.assetsId')
-                .where('albums_assets_assets.albumsId', '=', asUuid(options.albumId!)),
-            )
-            .$if(!!options.personId, (qb: any) => hasPeople(qb, [options.personId!]))
-            .$if(!!options.userIds, (qb: any) =>
-              qb.where((eb: any) =>
-                eb.or([
-                  eb('assets.ownerId', '=', anyUuid(options.userIds!)),
+      .with('assets', (qb: any) =>
+        qb
+          .selectFrom('assets')
+          .select(truncatedDate<Date>(TimeBucketSize.MONTH).as('timeBucket'))
+          .$if(!!options.isTrashed, (qb: any) => qb.where('assets.status', '!=', AssetStatus.DELETED))
+          .where('assets.deletedAt', options.isTrashed ? 'is not' : 'is', null)
+          .$if(options.visibility === undefined, withDefaultVisibility)
+          .$if(!!options.visibility, (qb: any) => qb.where('assets.visibility', '=', options.visibility!))
+          .$if(!!options.albumId, (qb: any) =>
+            qb
+              .innerJoin('albums_assets_assets', 'assets.id', 'albums_assets_assets.assetsId')
+              .where('albums_assets_assets.albumsId', '=', asUuid(options.albumId!)),
+          )
+          .$if(!!options.personId, (qb: any) => hasPeople(qb, [options.personId!]))
+          .$if(!!options.userIds || !!options.includeSharedAlbums, (qb: any) =>
+            qb.where((eb: any) => {
+              const conditions = [eb('assets.ownerId', '=', anyUuid(options.userIds!))];
+              if (options.includeSharedAlbums) {
+                console.log('Including shared albums in query'); // Debugging log
+                conditions.push(
                   eb.exists(
                     eb
                       .selectFrom('albums_assets_assets')
-                      .innerJoin('albums_shared_users_users', 'albums_assets_assets.albumsId', 'albums_shared_users_users.albumsId')
+                      .innerJoin(
+                        'albums_shared_users_users',
+                        'albums_assets_assets.albumsId',
+                        'albums_shared_users_users.albumsId',
+                      )
                       .whereRef('albums_assets_assets.assetsId', '=', 'assets.id')
-                      .where('albums_shared_users_users.usersId', '=', anyUuid(options.userIds!))
+                      .where('albums_shared_users_users.usersId', '=', anyUuid(options.userIds!)),
                   ),
-                ])
+                );
+              }
+              return eb.or(conditions);
+            }),
+          )
+          .$if(!!options.withStacked, (qb: any) =>
+            qb
+              .leftJoin('asset_stack', (join: any) =>
+                join
+                  .onRef('asset_stack.id', '=', 'assets.stackId')
+                  .onRef('asset_stack.primaryAssetId', '=', 'assets.id'),
               )
-            )
-            .$if(!!options.withStacked, (qb: any) =>
-              qb
-                .leftJoin('asset_stack', (join: any) =>
-                  join
-                    .onRef('asset_stack.id', '=', 'assets.stackId')
-                    .onRef('asset_stack.primaryAssetId', '=', 'assets.id'),
-                )
-                .where((eb: any) => eb.or([eb('assets.stackId', 'is', null), eb(eb.table('asset_stack'), 'is not', null)])),
-            )
-            .$if(options.isFavorite !== undefined, (qb: any) => qb.where('assets.isFavorite', '=', options.isFavorite!))
-            .$if(!!options.assetType, (qb: any) => qb.where('assets.type', '=', options.assetType!))
-            .$if(options.isDuplicate !== undefined, (qb: any) =>
-              qb.where('assets.duplicateId', options.isDuplicate ? 'is not' : 'is', null),
-            )
-            .$if(!!options.tagId, (qb: any) => withTagId(qb, options.tagId!)),
-        )
-        .selectFrom('assets')
-        .select(sql<string>`"timeBucket"::date::text`.as('timeBucket'))
-        .select((eb: any) => eb.fn.countAll().as('count'))
-        .groupBy('timeBucket')
-        .orderBy('timeBucket', options.order ?? 'desc')
-        .execute() as any as Promise<TimeBucketItem[]>
+              .where((eb: any) =>
+                eb.or([eb('assets.stackId', 'is', null), eb(eb.table('asset_stack'), 'is not', null)]),
+              ),
+          )
+          .$if(options.isFavorite !== undefined, (qb: any) => qb.where('assets.isFavorite', '=', options.isFavorite!))
+          .$if(!!options.assetType, (qb: any) => qb.where('assets.type', '=', options.assetType!))
+          .$if(options.isDuplicate !== undefined, (qb: any) =>
+            qb.where('assets.duplicateId', options.isDuplicate ? 'is not' : 'is', null),
+          )
+          .$if(!!options.tagId, (qb: any) => withTagId(qb, options.tagId!)),
+      )
+      .selectFrom('assets')
+      .select(sql<string>`"timeBucket"::date::text`.as('timeBucket'))
+      .select((eb: any) => eb.fn.countAll().as('count'))
+      .groupBy('timeBucket')
+      .orderBy('timeBucket', options.order ?? 'desc')
+      .execute() as any as Promise<TimeBucketItem[]>;
   }
 
   @GenerateSql({
     params: [DummyValue.TIME_BUCKET, { withStacked: true }],
   })
-  getTimeBucket(timeBucket: string, options: TimeBucketOptions) {
+  async getTimeBucket(timeBucket: string, options: TimeBucketOptions) {
     const query = this.db
       .with('cte', (qb: any) =>
         qb
@@ -641,19 +652,27 @@ export class AssetRepository {
             ),
           )
           .$if(!!options.personId, (qb: any) => hasPeople(qb, [options.personId!]))
-          .$if(!!options.userIds, (qb: any) =>
-            qb.where((eb: any) =>
-              eb.or([
-                eb('assets.ownerId', '=', anyUuid(options.userIds!)),
-                eb.exists(
-                  eb
-                    .selectFrom('albums_assets_assets')
-                    .innerJoin('albums_shared_users_users', 'albums_assets_assets.albumsId', 'albums_shared_users_users.albumsId')
-                    .whereRef('albums_assets_assets.assetsId', '=', 'assets.id')
-                    .where('albums_shared_users_users.usersId', '=', anyUuid(options.userIds!))
-                ),
-              ])
-            )
+          .$if(!!options.userIds || !!options.includeSharedAlbums, (qb: any) =>
+            qb.where((eb: any) => {
+              const conditions = [eb('assets.ownerId', '=', anyUuid(options.userIds!))];
+              if (options.includeSharedAlbums) {
+                console.log('Including shared albums in query'); // Debugging log
+                conditions.push(
+                  eb.exists(
+                    eb
+                      .selectFrom('albums_assets_assets')
+                      .innerJoin(
+                        'albums_shared_users_users',
+                        'albums_assets_assets.albumsId',
+                        'albums_shared_users_users.albumsId',
+                      )
+                      .whereRef('albums_assets_assets.assetsId', '=', 'assets.id')
+                      .where('albums_shared_users_users.usersId', '=', anyUuid(options.userIds!)),
+                  ),
+                );
+              }
+              return eb.or(conditions);
+            }),
           )
           .$if(options.isFavorite !== undefined, (qb: any) => qb.where('assets.isFavorite', '=', options.isFavorite!))
           .$if(!!options.withStacked, (qb: any) =>

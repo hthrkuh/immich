@@ -285,6 +285,7 @@ const joinDeduplicationPlugin = new DeduplicateJoinsPlugin();
 /** TODO: This should only be used for search-related queries, not as a general purpose query builder */
 
 export function searchAssetBuilder(kysely: Kysely<DB>, options: AssetSearchBuilderOptions) {
+  console.log('SearchAssetBuilder options:', options); // Debugging log
   options.withDeleted ||= !!(options.trashedAfter || options.trashedBefore || options.isOffline);
   const visibility = options.visibility == null ? AssetVisibility.TIMELINE : options.visibility;
 
@@ -343,18 +344,24 @@ export function searchAssetBuilder(kysely: Kysely<DB>, options: AssetSearchBuild
     .$if(!!options.id, (qb) => qb.where('assets.id', '=', asUuid(options.id!)))
     .$if(!!options.libraryId, (qb) => qb.where('assets.libraryId', '=', asUuid(options.libraryId!)))
     .$if(!!options.userIds, (qb: any) =>
-      qb.where((eb: any) =>
-        eb.or([
+      qb.where((eb: any) => {
+        const conditions = [
           eb('assets.ownerId', '=', anyUuid(options.userIds!)),
-          eb.exists(
-            eb
-              .selectFrom('albums_assets_assets')
-              .innerJoin('albums_shared_users_users', 'albums_assets_assets.albumsId', 'albums_shared_users_users.albumsId')
-              .whereRef('albums_assets_assets.assetsId', '=', 'assets.id')
-              .where('albums_shared_users_users.usersId', '=', anyUuid(options.userIds!))
-          ),
-        ])
-      )
+        ];
+        if (options.includeSharedAlbums) {
+          console.log('Including shared albums in query'); // Debugging log
+          conditions.push(
+            eb.exists(
+              eb
+                .selectFrom('albums_assets_assets')
+                .innerJoin('albums_shared_users_users', 'albums_assets_assets.albumsId', 'albums_shared_users_users.albumsId')
+                .whereRef('albums_assets_assets.assetsId', '=', 'assets.id')
+                .where('albums_shared_users_users.usersId', '=', anyUuid(options.userIds!))
+            )
+          );
+        }
+        return eb.or(conditions);
+      })
     )
     .$if(!!options.encodedVideoPath, (qb) => qb.where('assets.encodedVideoPath', '=', options.encodedVideoPath!))
     .$if(!!options.originalPath, (qb) =>

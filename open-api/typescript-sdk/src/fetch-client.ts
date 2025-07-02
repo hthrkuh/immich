@@ -3544,7 +3544,7 @@ export function getTimeBucket({ albumId, isFavorite, isTrashed, key, order, pers
         ...opts
     }));
 }
-export function getTimeBuckets({ albumId, isFavorite, isTrashed, key, order, personId, tagId, userId, visibility, withPartners, withStacked }: {
+export function getTimeBuckets({ albumId, isFavorite, isTrashed, key, order, personId, tagId, userId, visibility, withPartners, withStacked, includeSharedAlbums }: {
     albumId?: string;
     isFavorite?: boolean;
     isTrashed?: boolean;
@@ -3556,6 +3556,7 @@ export function getTimeBuckets({ albumId, isFavorite, isTrashed, key, order, per
     visibility?: AssetVisibility;
     withPartners?: boolean;
     withStacked?: boolean;
+    includeSharedAlbums?: boolean;
 }, opts?: Oazapfts.RequestOpts) {
     return oazapfts.ok(oazapfts.fetchJson<{
         status: 200;
@@ -3571,9 +3572,11 @@ export function getTimeBuckets({ albumId, isFavorite, isTrashed, key, order, per
         userId,
         visibility,
         withPartners,
-        withStacked
+        withStacked,
+        includeSharedAlbums
     }))}`, {
-        ...opts
+        ...opts,
+        method: "GET"
     }));
 }
 export function emptyTrash(opts?: Oazapfts.RequestOpts) {

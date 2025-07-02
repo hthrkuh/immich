@@ -14,6 +14,7 @@ import { getAssetInfo, getTimeBucket, getTimeBuckets } from '@immich/sdk';
 import { clamp, debounce, isEqual, throttle } from 'lodash-es';
 import { SvelteSet } from 'svelte/reactivity';
 import type { Unsubscriber } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { AddContext } from './add-context.svelte';
 import { AssetBucket } from './asset-bucket.svelte';
 import { AssetDateGroup } from './asset-date-group.svelte';
@@ -30,6 +31,12 @@ import type {
   Viewport,
 } from './types';
 import { isMismatched, updateObject } from './utils.svelte';
+
+const includeSharedAlbums = writable(localStorage.getItem('includeSharedAlbums') === 'true');
+
+includeSharedAlbums.subscribe((value) => {
+  localStorage.setItem('includeSharedAlbums', JSON.stringify(value));
+});
 
 const {
   TIMELINE: { INTERSECTION_EXPAND_TOP, INTERSECTION_EXPAND_BOTTOM },
@@ -71,7 +78,7 @@ export class AssetStore {
     () => void 0,
   );
 
-  static #INIT_OPTIONS = {};
+  static #INIT_OPTIONS: AssetStoreOptions = {includeSharedAlbums: false};
   #viewportHeight = $state(0);
   #viewportWidth = $state(0);
   #scrollTop = $state(0);
@@ -98,7 +105,12 @@ export class AssetStore {
     bucket: undefined,
   });
 
-  constructor() {}
+  constructor() {
+    includeSharedAlbums.subscribe((value: boolean) => {
+      localStorage.setItem('includeSharedAlbums', JSON.stringify(value));
+      this.updateOptions({  includeSharedAlbums: value });
+    });
+  }
 
   setLayoutOptions({ headerHeight = 48, rowHeight = 235, gap = 12 }: AssetStoreLayoutOptions) {
     let changed = false;
@@ -387,6 +399,7 @@ export class AssetStore {
   async #initializeTimeBuckets() {
     const timebuckets = await getTimeBuckets({
       ...this.#options,
+      includeSharedAlbums: this.#options.includeSharedAlbums, // Ensure toggle value is passed
       key: authManager.key,
     });
 
@@ -410,8 +423,9 @@ export class AssetStore {
     if (this.#options !== AssetStore.#INIT_OPTIONS && isEqual(this.#options, options)) {
       return;
     }
+    this.#options = options; // Update options
     await this.initTask.reset();
-    await this.#init(options);
+    await this.#init(options); // Trigger reinitialization
     this.#updateViewportGeometry(false);
   }
 
@@ -565,7 +579,7 @@ export class AssetStore {
       return;
     }
 
-    if (bucket.loader?.executed) {
+     if (bucket.loader?.executed) {
       return;
     }
 
@@ -575,18 +589,20 @@ export class AssetStore {
       }
       const timeBucket = toISOYearMonthUTC(bucket.yearMonth);
       const key = authManager.key;
-      const bucketResponse = await getTimeBucket(
-        {
-          ...this.#options,
-          timeBucket,
-          key,
-        },
+    const bucketResponse = await getTimeBucket(
+      {
+        ...this.#options,
+        includeSharedAlbums: this.#options.includeSharedAlbums ,
+        timeBucket,
+        key,
+      },
         { signal },
-      );
-      if (bucketResponse) {
+    );
+    if (bucketResponse) {
         if (this.#options.timelineAlbumId) {
           const albumAssets = await getTimeBucket(
-            {
+            {   
+              includeSharedAlbums: this.#options.includeSharedAlbums ,
               albumId: this.#options.timelineAlbumId,
               timeBucket,
               key,
@@ -608,7 +624,7 @@ export class AssetStore {
             )}`,
           );
         }
-        this.#layoutBucket(bucket);
+      this.#layoutBucket(bucket);
       }
     }, cancelable);
     if (result === 'LOADED') {

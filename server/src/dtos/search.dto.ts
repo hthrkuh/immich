@@ -179,6 +179,10 @@ export class MetadataSearchDto extends RandomSearchDto {
   @Type(() => Number)
   @Optional()
   page?: number;
+
+  @ValidateBoolean({ optional: true })
+  @ApiProperty({ type: 'boolean', required: false, description: 'Include shared albums in search' })
+  includeSharedAlbums?: boolean;
 }
 
 export class StatisticsSearchDto extends BaseSearchDto {
@@ -203,6 +207,10 @@ export class SmartSearchDto extends BaseSearchWithResultsDto {
   @Type(() => Number)
   @Optional()
   page?: number;
+
+  @ValidateBoolean({ optional: true })
+  @ApiProperty({ type: 'boolean', required: false, description: 'Include shared albums in search' })
+  includeSharedAlbums?: boolean;
 }
 
 export class SearchPlacesDto {
